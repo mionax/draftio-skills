@@ -53,6 +53,21 @@ curl -s https://www.draftio.cn/api/v2/public/models
 
 这三条写得很直白，是为了让 agent 别替我们吹牛。
 
+## 场景
+
+入口 skill 判断你要做什么，然后指向对应的场景配方。每个配方都是**从 Draftio 提示词库里已有的模板改出来的**——不是凭空写的，是我们在产品里已经跑通的写法。
+
+| 场景 | 你可能会说 | 首选模型 |
+|---|---|---|
+| [小红书封面](skills/draftio-image/xiaohongshu-cover/SKILL.md) | 「做张小红书封面」「3:4 竖版带标题字」 | `gpt-image-2` · 60 点起 |
+| [商品图 / 白底图](skills/draftio-image/product-shot/SKILL.md) | 「把产品拍得高级点」「要张白底主图」 | `gpt-image-2` · 60 点起 |
+| [视频封面 / 缩略图](skills/draftio-image/youtube-thumbnail/SKILL.md) | 「YouTube 缩略图」「播客封面 16:9」 | `gpt-image-2` · 60 点起 |
+| [信息图 / 地图](skills/draftio-image/infographic-map/SKILL.md) | 「城市美食地图」「图文长图」 | `gpt-image-2` · 60 点起 |
+
+每个配方都包含：何时用、选哪几个模型、可直接填空的提示词模板、参数（比例/分辨率/张数）、验收清单、以及出问题时的返工路径。
+
+想自己调参数？对应的完整模板在 [prompt-library](https://www.draftio.cn/prompt-library)。
+
 ## 安装
 
 ### Claude Code

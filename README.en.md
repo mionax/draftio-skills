@@ -53,6 +53,21 @@ For reference: OpenAI's high-quality 1024×1024 tier is about $0.211 per image (
 
 These limits are stated plainly so the agent doesn't overpromise on our behalf.
 
+## Scenarios
+
+The entry skill works out what you are making, then hands off to a scenario recipe. Every recipe is **derived from a template that already runs in Draftio's prompt library** — not invented for this repo.
+
+| Scenario | What you might say | First pick |
+|---|---|---|
+| [Xiaohongshu cover](skills/draftio-image/xiaohongshu-cover/SKILL.md) | "Make me an Xiaohongshu cover", "3:4 with a big title" | `gpt-image-2` · from 60 pts |
+| [Product shot / white background](skills/draftio-image/product-shot/SKILL.md) | "Make this product look premium", "white-background hero image" | `gpt-image-2` · from 60 pts |
+| [Video thumbnail](skills/draftio-image/youtube-thumbnail/SKILL.md) | "YouTube thumbnail", "podcast cover, 16:9" | `gpt-image-2` · from 60 pts |
+| [Infographic / map](skills/draftio-image/infographic-map/SKILL.md) | "City food map", "long-form infographic" | `gpt-image-2` · from 60 pts |
+
+Each recipe covers: when to use it, which models to pick, a fill-in-the-blanks prompt template, parameters (aspect ratio, resolution, count), an acceptance checklist, and what to change when the first attempt misses.
+
+Want the full knobs? The underlying templates live in [prompt-library](https://www.draftio.cn/prompt-library).
+
 ## Install
 
 ### Claude Code
