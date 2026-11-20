@@ -62,6 +62,18 @@ for (const entry of readdirSync(skillsDir)) {
   if ((fields.description ?? '').length < 40) fail(`${skillPath}: description is too short to be useful`)
 }
 
+for (const readme of ['README.md', 'README.en.md']) {
+  let raw
+  try {
+    raw = readFileSync(readme, 'utf8')
+  } catch {
+    fail(`${readme}: missing (both language versions must exist)`)
+    continue
+  }
+  const other = readme === 'README.md' ? 'README.en.md' : 'README.md'
+  if (!raw.includes(`](${other})`)) fail(`${readme}: must link to ${other}`)
+}
+
 if (errors.length > 0) {
   console.error(`validation failed with ${errors.length} problem(s):`)
   for (const error of errors) console.error(`  - ${error}`)
