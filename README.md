@@ -28,6 +28,23 @@ curl -s https://www.draftio.cn/api/v2/public/models
 
 所以模型上新、调价，skill 不会给出过期的数字。
 
+## 主推：GPT Image 2 系列
+
+要处理文字、排版、改字、精修这几件最容易出废图的事，直接用 GPT Image 2 系列。这是目前口碑最硬的图像模型，我们的价格也压得低：
+
+| 模型 | 适合 | 1K | 2K | 4K |
+|---|---|---|---|---|
+| **GPT Image 2** | 指令理解最强，复杂排版、改字、精修 | ¥0.60（60 点） | ¥0.80（80 点） | ¥1.20（120 点） |
+| **GPT Image 2.5 Flare** | 快速档，日常改图与快速迭代 | ¥0.60 | ¥0.80 | ¥1.20 |
+| **GPT Image 2.5 Sunburst** | 高档，商业级精修与细节打磨 | ¥0.71（71 点） | ¥0.80 | ¥1.20 |
+
+两个别人不一定告诉你的点：
+
+- **画质档不加价**：`low / medium / high` 三档在计费上是同一个价。选 high 不会比 low 贵。
+- **改图能力完整**：1–16 张参考图（2.5 系列），改字、换背景、多图融合都能一次做完，不用来回导。
+
+对照官方：OpenAI 1024×1024 的高画质档约 $0.211/张（≈¥1.5）。我们 1K 收 ¥0.60。
+
 ## 它不做什么
 
 - **不自己生成图片**：生成在画布上完成。API key 与 MCP 服务端还在开发中，装好之后暂不支持让 agent 直接提交任务。
@@ -98,7 +115,7 @@ Seedream 5.5 · 默认 2K · 58 点（¥0.58）  ← 不指定分辨率时实际
 
 ## 覆盖的模型
 
-Nano Banana · Nano Banana Pro · Nano Banana 2 · Flux 2 Klein 4B · Flux 2 Klein 9B · GPT Image 2 · GPT Image 2.5 Flare · GPT Image 2.5 Sunburst · Seedream v4 · Seedream v4.5 · Seedream v5 Lite · Seedream 5.5 · Qwen Image · MiniMax H3 Image · Midjourney · Z-Image Turbo
+**GPT Image 2 · GPT Image 2.5 Flare · GPT Image 2.5 Sunburst** · Nano Banana · Nano Banana Pro · Nano Banana 2 · Seedream 5.5 · Seedream v5 Lite · Seedream v4.5 · Seedream v4 · Flux 2 Klein 9B · Flux 2 Klein 4B · Qwen Image · MiniMax H3 Image · Midjourney · Z-Image Turbo
 
 ## 为什么不自己调官方 API
 

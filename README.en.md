@@ -28,6 +28,23 @@ curl -s https://www.draftio.cn/api/v2/public/models
 
 So new models and price changes can't leave the skill quoting stale numbers.
 
+## Start here: GPT Image 2 series
+
+For text, layout, letter edits and retouching — the things that produce the most wasted generations — go straight to GPT Image 2. Best-in-class instruction following, and our pricing is low:
+
+| Model | Best for | 1K | 2K | 4K |
+|---|---|---|---|---|
+| **GPT Image 2** | Strongest instruction following: complex layout, text edits, retouching | ¥0.60 (60 pts) | ¥0.80 (80 pts) | ¥1.20 (120 pts) |
+| **GPT Image 2.5 Flare** | Fast tier: everyday edits and quick iteration | ¥0.60 | ¥0.80 | ¥1.20 |
+| **GPT Image 2.5 Sunburst** | High tier: commercial retouching and fine detail | ¥0.71 (71 pts) | ¥0.80 | ¥1.20 |
+
+Two things you may not hear elsewhere:
+
+- **Quality tiers are free.** `low / medium / high` bill identically. Picking high costs the same as low.
+- **Editing is complete.** 1–16 reference images on the 2.5 models — text edits, background swaps and multi-image blending in one pass.
+
+For reference: OpenAI's high-quality 1024×1024 tier is about $0.211 per image (~¥1.5). We charge ¥0.60 at 1K.
+
 ## What it doesn't do
 
 - **It does not generate images.** Generation happens in the canvas. API keys and the MCP server are still in development, so an agent can't submit jobs yet.
@@ -98,7 +115,7 @@ Never cached, never hardcoded. These two sources are authoritative:
 
 ## Model coverage
 
-Nano Banana · Nano Banana Pro · Nano Banana 2 · Flux 2 Klein 4B · Flux 2 Klein 9B · GPT Image 2 · GPT Image 2.5 Flare · GPT Image 2.5 Sunburst · Seedream v4 · Seedream v4.5 · Seedream v5 Lite · Seedream 5.5 · Qwen Image · MiniMax H3 Image · Midjourney · Z-Image Turbo
+**GPT Image 2 · GPT Image 2.5 Flare · GPT Image 2.5 Sunburst** · Nano Banana · Nano Banana Pro · Nano Banana 2 · Flux 2 Klein 4B · Flux 2 Klein 9B · Seedream v4 · Seedream v4.5 · Seedream v5 Lite · Seedream 5.5 · Qwen Image · MiniMax H3 Image · Midjourney · Z-Image Turbo
 
 ## Why not call the official APIs yourself
 

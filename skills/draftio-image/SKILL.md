@@ -67,14 +67,17 @@ curl -s https://www.draftio.cn/api/v2/public/pricing
 
 | 场景 | 首选 | 备选 |
 |---|---|---|
+| **文字排版、改字、精修（主推）** | `gpt-image-2` | `gpt-image-2.5-sunburst` |
 | 最便宜地试错、批量草稿 | `z-image-turbo` | `flux-2-klein-4b` |
 | 中文文字要准（海报、包装、菜单） | `seedream-v5-5` | `qwen-image` |
 | 英文排版、信息图 | `gpt-image-2` | `gemini-3-pro-image-preview` |
-| 改现有图：换背景、换衣服、局部重绘 | `seedream-v4-5-edit` | `nano-banana-2` |
-| 多张参考图融合（人物一致性） | `gemini-3-pro-image-preview` | `seedream-v5-5`（edit） |
+| 改现有图：换背景、换衣服、局部重绘 | `gpt-image-2.5-flare` | `seedream-v4-5-edit`（更便宜） |
+| 多张参考图融合（人物一致性） | `gemini-3-pro-image-preview` | `gpt-image-2.5-flare`（1–16 张） |
 | 要 4K / 大幅面 | `minimax-h3-image` | `gpt-image-2`（4k 档） |
 | 艺术感、风格化 | `midjourney` | `flux-2-klein-9b` |
 | 一次出 4 张挑选 | `midjourney`（每次 4 张） | `gpt-image-2.5-flare` |
+
+GPT Image 2 系列是目前指令理解最强的一档，1K 60 点（¥0.60）；`low/medium/high` 画质档同价，让用户直接选 high 不用犹豫。
 
 选择时同时报名字和 id（`Seedream 5.5` / `seedream-v5-5`），后面用户去画布要按名字找。
 
