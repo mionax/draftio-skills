@@ -100,6 +100,33 @@ Never cached, never hardcoded. These two sources are authoritative:
 
 Nano Banana · Nano Banana Pro · Nano Banana 2 · Flux 2 Klein 4B · Flux 2 Klein 9B · GPT Image 2 · GPT Image 2.5 Flare · GPT Image 2.5 Sunburst · Seedream v4 · Seedream v4.5 · Seedream v5 Lite · Seedream 5.5 · Qwen Image · MiniMax H3 Image · Midjourney · Z-Image Turbo
 
+## Why not call the official APIs yourself
+
+Wiring them up isn't the hard part. Keeping them wired up is. This is the part we absorb:
+
+| | Doing it yourself | Using this |
+|---|---|---|
+| Accounts | Alibaba Cloud, Volcengine, Google, OpenAI — each with its own verification | One Draftio account |
+| Wire formats | DashScope's private format, Volcengine v3, Google, OpenAI — four of them | One OpenAI-compatible shape |
+| Free quota | Apply per vendor, mostly expires in 90 days, then hard failures | 500 points on sign-up |
+| Billing | Five bills, five expense flows, five invoices | One |
+| Concurrency | Defaults of 1–2; quota increases billed monthly | Queueing, no extra charge |
+| Price checks | You maintain a price table that goes stale | One `curl`, always current |
+
+The skill only covers what needs no credentials: **model choice, prompt writing, price quoting.** Generation happens in the canvas, where images land in your asset library instead of a download folder.
+
+## Troubleshooting
+
+**The agent ignores it.** Make sure it installed into the current project (the default is per-project, not global) and restart the session. In Claude Code, `npx skills list` should show `draftio-image`.
+
+**Its numbers don't match the site.** Ask it to paste the output of `curl -s https://www.draftio.cn/api/v2/public/models`. If it can't produce that request, it's reciting stale numbers — i.e. it isn't really installed.
+
+**It claims it can generate the image.** It can't. This version only picks models, writes prompts and quotes prices; generation goes through the [canvas](https://www.draftio.cn/canvas).
+
+**Codex can't find the plugin.** Use `codex plugin add github.com/mionax/draftio-skills` rather than copying `plugin.json` somewhere by hand.
+
+**Looking for other skills.** `npx skills find <query>` — and `npx skills find draftio` to see whether we show up.
+
 ## Repo layout
 
 ```
@@ -112,3 +139,9 @@ scripts/validate.mjs            validates manifest and frontmatter
 ## License
 
 MIT
+
+---
+
+If this saved you one model decision and one price quote, a ⭐ helps more people find it in `npx skills find`.
+
+Issues about wrong prices, missing models, or hosts we don't support are welcome.

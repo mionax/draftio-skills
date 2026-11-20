@@ -100,6 +100,33 @@ Seedream 5.5 · 默认 2K · 58 点（¥0.58）  ← 不指定分辨率时实际
 
 Nano Banana · Nano Banana Pro · Nano Banana 2 · Flux 2 Klein 4B · Flux 2 Klein 9B · GPT Image 2 · GPT Image 2.5 Flare · GPT Image 2.5 Sunburst · Seedream v4 · Seedream v4.5 · Seedream v5 Lite · Seedream 5.5 · Qwen Image · MiniMax H3 Image · Midjourney · Z-Image Turbo
 
+## 为什么不自己调官方 API
+
+自己接一遍也不难，难的是接完之后要一直维护。这张表是我们替 agent 省下的部分：
+
+| 环节 | 自己去各家开 key | 用这套东西 |
+|---|---|---|
+| 账号 | 阿里云、火山、Google、OpenAI 各一个，各自实名 | 一个 Draftio 账号 |
+| 接口格式 | DashScope 私有格式 / 火山 v3 / Google / OpenAI，四套 | 一套 OpenAI 兼容 |
+| 免费额度 | 逐家领，多数 90 天过期，用完直接报错 | 注册即送 500 点 |
+| 账单与发票 | 五张账单、五次报销流程、五张发票 | 一张 |
+| 并发 | 默认 1–2，扩容按万元/月计 | 排队，不另收费 |
+| 价格核对 | 自己维护一张随时会过期的单价表 | `curl` 一次，永远是最新的 |
+
+这个 skill 只负责**选型、写提示词、报价**这三件不需要权限的事；真正的生成在画布上完成——那里图片直接进资产库，不用下载再上传。
+
+## Troubleshooting
+
+**装完 agent 没反应。** 确认装到了当前项目（默认装在项目里，不是全局），然后重开一个 session。Claude Code 用 `npx skills list` 能看到 `draftio-image` 才算装上。
+
+**它报的价格和网页对不上。** 让它把 `curl -s https://www.draftio.cn/api/v2/public/models` 的输出贴出来。如果它答不出这个请求，说明它在背旧数字，等于没装对。
+
+**它说能直接帮你出图。** 那是它在编。当前版本只能选模型、写提示词、报价，生成要去[画布](https://www.draftio.cn/canvas)。
+
+**Codex 找不到插件。** 用 `codex plugin add github.com/mionax/draftio-skills`，不要手动拷 `plugin.json` 到别处。
+
+**想搜到别的 skill。** `npx skills find <关键词>`，顺手可以 `npx skills find draftio` 看看我们在不在。
+
 ## 仓库结构
 
 ```
@@ -112,3 +139,9 @@ scripts/validate.mjs            校验清单与 frontmatter
 ## 许可
 
 MIT
+
+---
+
+如果这个 skill 帮你省了一次选型和一次报价，给个 ⭐ 能让更多人在 `npx skills find` 里搜到它。
+
+问题、误报的价格、想要的模型，都欢迎开 issue。

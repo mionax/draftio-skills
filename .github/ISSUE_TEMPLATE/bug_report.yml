@@ -1,0 +1,40 @@
+name: 报价错误
+description: agent 报的价格与 draftio.cn/pricing/models 不一致，或报了接口里不存在的模型
+labels: ["pricing", "bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        价格错误是最严重的 bug。请尽量附上接口原始输出，我们才能判断是 skill 写错了，还是 agent 没真的去查。
+  - type: textarea
+    id: asked
+    attributes:
+      label: 你对 agent 说了什么
+      placeholder: 帮我做一张咖啡店开业的海报，中文竖版
+    validations:
+      required: true
+  - type: textarea
+    id: quoted
+    attributes:
+      label: agent 报的价
+      placeholder: Seedream 5.5 · 1K · 33 点（¥0.33）
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 网页上的实际价格
+      description: 来自 https://www.draftio.cn/pricing/models
+    validations:
+      required: true
+  - type: textarea
+    id: endpoint
+    attributes:
+      label: 接口输出
+      description: '`curl -s https://www.draftio.cn/api/v2/public/models` 的结果（可只贴相关模型）'
+      render: json
+  - type: input
+    id: host
+    attributes:
+      label: 宿主与版本
+      placeholder: Claude Code 2.x / Codex / Cursor

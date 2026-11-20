@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 模型价格
+    url: https://www.draftio.cn/pricing/models
+    about: 16 个图像模型的逐档价格，含默认档实扣
+  - name: Draftio 主站
+    url: https://www.draftio.cn
+    about: 画布、账号、充值相关的问题请走主站
