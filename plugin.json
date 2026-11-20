@@ -1,0 +1,47 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "draftio-image",
+  "version": "0.1.0",
+  "description": "Pick the right image model, write the prompt, and quote the exact point price before generating on the Draftio canvas.",
+  "author": {
+    "name": "Draftio",
+    "url": "https://www.draftio.cn"
+  },
+  "homepage": "https://www.draftio.cn/pricing/models",
+  "repository": "https://github.com/mionax/draftio-skills",
+  "keywords": [
+    "agent-skills",
+    "claude-code",
+    "codex",
+    "image-generation",
+    "text-to-image",
+    "image-editing",
+    "pricing",
+    "seedream",
+    "nano-banana",
+    "midjourney"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Draftio Image",
+        "shortDescription": "Choose a model, write the prompt, quote the price.",
+        "longDescription": "Adds a Draftio image workflow: read live per-model prices, choose between 16 image models, write a prompt matched to the model's dialect, and quote the exact point cost before the user generates on the Draftio canvas.",
+        "developerName": "Draftio",
+        "category": "Productivity",
+        "capabilities": [
+          "Read"
+        ],
+        "websiteURL": "https://www.draftio.cn",
+        "privacyPolicyURL": "https://www.draftio.cn/privacy",
+        "termsOfServiceURL": "https://www.draftio.cn/terms",
+        "defaultPrompt": [
+          "Pick a model and quote the price for this image.",
+          "Write a Seedream prompt for a product poster.",
+          "How much would 10 images at 2K cost?"
+        ],
+        "brandColor": "#6366F1"
+      }
+    }
+  }
+}

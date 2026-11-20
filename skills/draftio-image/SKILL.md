@@ -1,0 +1,124 @@
+---
+name: draftio-image
+description: 为「要一张图」这类任务做三件事——选对模型、写出能用的提示词、报出确切价格（点数与人民币）。当用户说「生成图片」「画一张」「做个海报/封面/主图」「换个背景」「把这张图改成…」「用 Seedream / Nano Banana / GPT Image / Midjourney 出图」「这批图大概多少钱」时使用。不产生图片本身：生成在 Draftio 画布完成。
+---
+
+# Draftio Image
+
+## 何时用我
+
+用户要一张**图**（不是要 SVG、不是要代码画图、不是要文字描述画面），并且需要一个能真正跑出图的方案时。
+
+我负责三件事，都能离线完成、不需要任何 key：
+
+1. **选模型** —— 按场景挑一个，并说明为什么是它。
+2. **写提示词** —— 按目标模型的口味改写用户那句话。
+3. **报价格** —— 给点数与人民币，包含「不指定分辨率时实际会扣多少」。
+
+我不负责：替用户画图、编造价格、承诺还没开放的能力。
+
+## 铁律（违反会直接坑到用户）
+
+- **价格只从接口读，不许背。** 模型和价格每天可能变，凭记忆报出来的数字一定会错。
+- **起价 ≠ 实付。** 很多模型分分辨率档，不传分辨率时按**默认档**计费。Seedream 5.5 起价 33 点、默认 2k 档实扣 58 点，差 76%。报价必须两个都给。
+- **不要拿我们的价去和厂商官方价比。** 官方价是厂商自己的零售价，和我们的定价口径不同；用户问「比官方便宜吗」，答案以 `https://www.draftio.cn/pricing/models` 页面为准，不要自己算。
+- **不给未开放的能力编路径。** 生成走网页画布；API key 与 MCP 仍在开发中。
+
+## 第 0 步：查真实价格（必做）
+
+```bash
+# 模型 + 价格 + 汇率（JSON，中文口径）
+curl -s https://www.draftio.cn/api/v2/public/models
+```
+
+返回结构：
+
+```jsonc
+{
+  "success": true,
+  "data": {
+    "pointsPerCny": 100,        // 100 点 = ¥1，即 1 点 = ¥0.01
+    "models": [{
+      "id": "seedream-v5-5",
+      "label": "Seedream 5.5",
+      "operations": { "generate": true, "edit": true },
+      "resolutionTiers": ["1k", "2k"],
+      "imagesPerCall": 1,
+      "price": {
+        "unit": "pointsPerCall",
+        "startingFrom": 33,                 // 最低档
+        "defaultPrice": 58,                 // 不指定分辨率时的实扣
+        "defaultResolutionTier": "2k",
+        "pointsByResolution": { "1k": 33, "2k": 58 }
+      }
+    }]
+  }
+}
+```
+
+只有当 `pointsPerCny` 存在时才能换算出人民币；没有就只报点数，不要假设汇率。
+
+```bash
+# 注册赠送与套餐（可选）
+curl -s https://www.draftio.cn/api/v2/public/pricing
+```
+
+## 第 1 步：选模型
+
+| 场景 | 首选 | 备选 |
+|---|---|---|
+| 最便宜地试错、批量草稿 | `z-image-turbo` | `flux-2-klein-4b` |
+| 中文文字要准（海报、包装、菜单） | `seedream-v5-5` | `qwen-image` |
+| 英文排版、信息图 | `gpt-image-2` | `gemini-3-pro-image-preview` |
+| 改现有图：换背景、换衣服、局部重绘 | `seedream-v4-5-edit` | `nano-banana-2` |
+| 多张参考图融合（人物一致性） | `gemini-3-pro-image-preview` | `seedream-v5-5`（edit） |
+| 要 4K / 大幅面 | `minimax-h3-image` | `gpt-image-2`（4k 档） |
+| 艺术感、风格化 | `midjourney` | `flux-2-klein-9b` |
+| 一次出 4 张挑选 | `midjourney`（每次 4 张） | `gpt-image-2.5-flare` |
+
+选择时同时报名字和 id（`Seedream 5.5` / `seedream-v5-5`），后面用户去画布要按名字找。
+
+## 第 2 步：写提示词
+
+通用骨架：**主体 + 动作/状态 + 构图与镜头 + 光线 + 风格 + 画幅**。用户说得越少，越要把缺的部分替他想清楚，但不要改他的意图。
+
+- **Seedream / Qwen（中文强）**：中文直接写，把画面里的字用引号标出来，例如 `画面中央标题写「秋日限定」`。避免形容词堆叠。
+- **GPT Image / Nano Banana（指令强）**：英文更稳，结构化成句子；编辑任务写清「保留什么、改变什么」，例如 `keep the face and pose, replace the background with...`。
+- **Midjourney**：逗号分隔的关键词流，末尾加参数（`--ar 3:4 --style raw`）。它不吃长句指令。
+- **编辑类**：先说「基于第几张图」，再说改什么。参考图的顺序就是画布里的顺序。
+
+输出时给**一段可直接粘贴的提示词**，不要给三个版本让用户选——除非他明确想要选择。
+
+## 第 3 步：报价
+
+固定格式，两个数都给：
+
+```
+Seedream 5.5 · 1 张
+- 1k 档：33 点 ≈ ¥0.33
+- 不指定分辨率（默认 2k）：58 点 ≈ ¥0.58
+```
+
+批量时算总价并提示：`10 张 2k ≈ 580 点 ≈ ¥5.80`。
+
+如果用户余额可能不够，提醒一句「注册送 500 点，30 天有效」。
+
+## 生成：交给画布
+
+参数确认后，给一个明确的下一步：
+
+> 打开 https://www.draftio.cn/canvas ，选 **Seedream 5.5**，把上面的提示词粘进去，分辨率选 **2k**（58 点）。
+
+不要伪造 API key、不要构造不存在的接口地址、不要说「我已经帮你生成了」。
+
+## 能力边界
+
+- 我拿不到用户的账户、余额和历史作品。
+- 我不能提交生成任务（API key 与 MCP 服务端在开发中，开放后这里会更新）。
+- 视频不在本 skill 范围内。
+
+## 参考
+
+- 完整价格与分档：https://www.draftio.cn/pricing/models
+- 机器可读模型表：https://www.draftio.cn/api/v2/public/models
+- 精选样张与能力：https://www.draftio.cn/models
