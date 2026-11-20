@@ -1,0 +1,13 @@
+{
+  "name": "draftio",
+  "version": "0.1.0",
+  "description": "让 coding agent 会出图：按场景选模型、按模型方言写提示词、报出确切点数价格。生成在 Draftio 画布完成，支付宝人民币结算。",
+  "author": {
+    "name": "Draftio",
+    "url": "https://www.draftio.cn"
+  },
+  "homepage": "https://www.draftio.cn/pricing/models",
+  "repository": "https://github.com/mionax/draftio-skills",
+  "license": "MIT",
+  "keywords": ["image-generation", "text-to-image", "image-editing", "pricing", "skill"]
+}

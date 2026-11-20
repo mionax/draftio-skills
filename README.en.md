@@ -2,9 +2,9 @@
 
 [中文](README.md) · **English**
 
-An image-generation skill for coding agents: **pick the right model, write the prompt in that model's dialect, and quote the exact price.**
+Draftio's agent entry point. It stops your coding agent from giving useless image advice: **pick the right model, write the prompt in that model's dialect, quote the exact price in points.**
 
-No API key, no sign-up. Image generation itself happens in the [Draftio canvas](https://www.draftio.cn/canvas).
+No API key and no sign-up needed for this part — the skill handles decisions and pricing, and the actual render happens in the [Draftio canvas](https://www.draftio.cn/canvas). An API key and MCP server are on the way; once they ship, the same skill takes over "submit the generation" too.
 
 ```bash
 npx skills add mionax/draftio-skills
@@ -16,59 +16,68 @@ npx skills add mionax/draftio-skills
 
 | | What | Why it matters |
 |---|---|---|
-| **Picks a model** | Recommends one primary and one fallback for your case: Chinese posters, English typography, edits, multi-reference fusion, 4K, artistic | 16 models have different limits; picking wrong means paying to redo it |
-| **Writes the prompt** | In the model's own dialect: Seedream/Qwen take Chinese directly, GPT Image/Nano Banana want structured English, Midjourney wants comma keywords plus `--ar` | The same request needs a different prompt per model; the wrong one produces disposable images |
-| **Quotes the price** | Always gives the **cheapest tier** and the **default-tier charge**, with totals for batches | Starting price is not what you pay. Seedream 5.5 starts at 33 points but charges 58 points when you don't pick a resolution — a 76% gap |
+| **Pick a model** | Given the scenario (Chinese poster, English layout, editing, multi-reference, 4K, artistic), recommends one primary and one alternative | The 16 models have different strengths; picking wrong means paying twice |
+| **Write the prompt** | In each model's dialect: Chinese for Seedream/Qwen, structured English for GPT Image/Nano Banana, comma keyword flow + `--ar` for Midjourney | The same request needs a different phrasing per model; wrong phrasing means a wasted image |
+| **Quote the price** | Gives both the **entry tier** and the **default-tier charge**, plus batch totals | Entry price ≠ what you pay. Seedream 5.5 starts at 33 points but charges 58 when you don't pick a resolution — a 76% difference |
 
-Prices are never hardcoded. Every run reads them from the public endpoint:
+Prices are never hardcoded. The skill reads them on every run:
 
 ```bash
 curl -s https://www.draftio.cn/api/v2/public/models
 ```
 
-So new models and price changes can't leave the skill quoting stale numbers.
+So new models and price changes can't leave you with stale numbers.
 
 ## Start here: GPT Image 2 series
 
-For text, layout, letter edits and retouching — the things that produce the most wasted generations — go straight to GPT Image 2. Best-in-class instruction following, and our pricing is low:
+For text, layout, retouching and precise edits — the tasks that most often produce throwaway images — go straight to the GPT Image 2 series. It is the most respected image model right now, and our price is low:
 
-| Model | Best for | 1K | 2K | 4K |
+| Model | Best at | 1K | 2K | 4K |
 |---|---|---|---|---|
-| **GPT Image 2** | Strongest instruction following: complex layout, text edits, retouching | ¥0.60 (60 pts) | ¥0.80 (80 pts) | ¥1.20 (120 pts) |
-| **GPT Image 2.5 Flare** | Fast tier: everyday edits and quick iteration | ¥0.60 | ¥0.80 | ¥1.20 |
-| **GPT Image 2.5 Sunburst** | High tier: commercial retouching and fine detail | ¥0.71 (71 pts) | ¥0.80 | ¥1.20 |
+| **GPT Image 2** | Strongest instruction following; complex layout, text edits, retouching | ¥0.60 (60 pts) | ¥0.80 (80 pts) | ¥1.20 (120 pts) |
+| **GPT Image 2.5 Flare** | Fast tier; everyday edits and iteration | ¥0.60 | ¥0.80 | ¥1.20 |
+| **GPT Image 2.5 Sunburst** | High tier; commercial retouching and fine detail | ¥0.71 (71 pts) | ¥0.80 | ¥1.20 |
 
-Two things you may not hear elsewhere:
+Two things you may not be told elsewhere:
 
-- **Quality tiers are free.** `low / medium / high` bill identically. Picking high costs the same as low.
-- **Editing is complete.** 1–16 reference images on the 2.5 models — text edits, background swaps and multi-image blending in one pass.
+- **Quality tiers are free.** `low / medium / high` bill identically. Choosing high costs no more than low.
+- **Editing is complete.** 1–16 reference images (2.5 series); text edits, background swaps and multi-image merges in one pass, no export/re-import loop.
 
 For reference: OpenAI's high-quality 1024×1024 tier is about $0.211 per image (~¥1.5). We charge ¥0.60 at 1K.
 
 ## What it doesn't do
 
-- **It does not generate images.** Generation happens in the canvas. API keys and the MCP server are still in development, so an agent can't submit jobs yet.
-- It can't read your balance or your history.
-- No video models — 16 image models only, for now.
+- **It does not generate images itself.** Rendering happens in the canvas. The API key and MCP server are still being built, so the agent cannot submit jobs yet.
+- It cannot read your balance or your past renders.
+- No video models (16 image models only).
 
-These limits are stated plainly so the agent doesn't overpromise on our behalf.
+These three points are blunt on purpose: the skill should not let the agent overpromise on our behalf.
 
-## Scenarios
+## Example recipes (from our prompt library)
 
-The entry skill works out what you are making, then hands off to a scenario recipe. Every recipe is **derived from a template that already runs in Draftio's prompt library** — not invented for this repo.
+The skill works out what you are making, then pulls up one of these. All four are **adapted from templates already running in Draftio's prompt library** — not invented for the repo, just compressed into fill-in-the-blank form.
 
-| Scenario | What you might say | First pick |
+| Recipe | You might say | Primary model |
 |---|---|---|
-| [Xiaohongshu cover](skills/draftio-image/xiaohongshu-cover/SKILL.md) | "Make me an Xiaohongshu cover", "3:4 with a big title" | `gpt-image-2` · from 60 pts |
-| [Product shot / white background](skills/draftio-image/product-shot/SKILL.md) | "Make this product look premium", "white-background hero image" | `gpt-image-2` · from 60 pts |
-| [Video thumbnail](skills/draftio-image/youtube-thumbnail/SKILL.md) | "YouTube thumbnail", "podcast cover, 16:9" | `gpt-image-2` · from 60 pts |
-| [Infographic / map](skills/draftio-image/infographic-map/SKILL.md) | "City food map", "long-form infographic" | `gpt-image-2` · from 60 pts |
+| [Xiaohongshu cover](examples/xiaohongshu-cover.md) | "make an XHS cover", "3:4 vertical with a headline" | `gpt-image-2` · from 60 pts |
+| [Product shot / white background](examples/product-shot.md) | "make my product look premium", "clean white-background hero" | `gpt-image-2` · from 60 pts |
+| [Video thumbnail](examples/youtube-thumbnail.md) | "YouTube thumbnail", "podcast cover 16:9" | `gpt-image-2` · from 60 pts |
+| [Infographic / map](examples/infographic-map.md) | "city food map", "long-form infographic" | `gpt-image-2` · from 60 pts |
 
-Each recipe covers: when to use it, which models to pick, a fill-in-the-blanks prompt template, parameters (aspect ratio, resolution, count), an acceptance checklist, and what to change when the first attempt misses.
+Each contains: when to use it, which models, a fill-in prompt template, parameters, an acceptance checklist, and a rework path when it goes wrong.
 
-Want the full knobs? The underlying templates live in [prompt-library](https://www.draftio.cn/prompt-library).
+The files here are **text copies**. The authoritative version, with finished samples, lives at [prompt-library](https://www.draftio.cn/prompt-library).
 
 ## Install
+
+### One command (detects installed hosts)
+
+```bash
+git clone https://github.com/mionax/draftio-skills.git
+cd draftio-skills && ./install.sh
+```
+
+`./install.sh claude` / `codex` / `opencode` installs one host; `./install.sh list` only prints the destinations.
 
 ### Claude Code
 
@@ -82,29 +91,28 @@ npx skills add mionax/draftio-skills
 codex plugin add github.com/mionax/draftio-skills
 ```
 
-### Cursor / any host with `AGENTS.md`
+### Cursor / anything that reads `AGENTS.md`
 
 Paste the body of [`skills/draftio-image/SKILL.md`](skills/draftio-image/SKILL.md) into your project's `.cursor/rules` or `AGENTS.md`. No dependencies.
 
 ### Manual
 
 ```bash
-git clone https://github.com/mionax/draftio-skills.git
 cp -r draftio-skills/skills/draftio-image .claude/skills/
 ```
 
-## Try one prompt
+## Try it
 
-After installing, ask your agent:
+Once installed, tell your agent:
 
-> Make a poster for a coffee shop opening — vertical Chinese layout, warm tones, with the words "开业大吉".
+> Make a poster for a coffee shop opening. Chinese, vertical, warm tones, with the characters 「开业大吉」.
 
-**What a correct run looks like:**
+**What should happen:**
 
-1. It calls `/api/v2/public/models` first.
-2. It picks `seedream-v5-5` (most reliable with Chinese text) or `qwen-image`, and says why.
-3. It returns one prompt you can paste as-is.
-4. It quotes two lines, roughly:
+1. It fetches `/api/v2/public/models` for real prices.
+2. It picks `seedream-v5-5` (best at Chinese text) or `qwen-image`, and says why.
+3. It writes a prompt you can paste directly.
+4. It quotes two lines, for example:
 
 ```
 Seedream 5.5 · 1K · 33 points (¥0.33)
@@ -115,57 +123,61 @@ Seedream 5.5 · default 2K · 58 points (¥0.58)  ← what you actually pay with
 
 ## Why Draftio
 
-- **One key, one bill.** Seedream, Qwen, Nano Banana, GPT Image, FLUX and Midjourney behind a single endpoint — no four cloud accounts, no four signing schemes.
-- **Alipay, CNY, one invoice.** No foreign card, no PayPal.
-- **Output lands in the canvas.** No download-and-reupload; keep editing, blending, outpainting.
-- **500 free points on sign-up** (valid 30 days) — about 55 Z-Image Turbo images, or 8 Seedream 5.5 images at the default 2K tier.
+- **One key, one bill.** Seedream / Qwen / Nano Banana / GPT Image / FLUX / Midjourney behind a single endpoint — no four cloud accounts and four signing schemes.
+- **Alipay, RMB, one invoice.** No foreign cards, no PayPal.
+- **Outputs land in the canvas.** No download-and-re-upload: keep editing, merging, outpainting.
+- **500 free points on sign-up** (valid 30 days) — roughly 55 Z-Image Turbo images or 8 Seedream 5.5 images at the default 2K.
 
 ## Pricing
 
-Never cached, never hardcoded. These two sources are authoritative:
+Never cached, never hardcoded. These three are the source of truth:
 
-- For humans: [draftio.cn/pricing/models](https://www.draftio.cn/pricing/models) — every tier for all 16 models, including the default-tier charge
-- For agents: [`/api/v2/public/models`](https://www.draftio.cn/api/v2/public/models) — points, tiers, images per call
-- Plans and point packages: [`/api/v2/public/pricing`](https://www.draftio.cn/api/v2/public/pricing)
+- For humans: [draftio.cn/pricing/models](https://www.draftio.cn/pricing/models) — 16 models, per-tier prices, including the default tier
+- For machines: [`/api/v2/public/models`](https://www.draftio.cn/api/v2/public/models) — points, tiers, images per call
+- Plans and point packs: [`/api/v2/public/pricing`](https://www.draftio.cn/api/v2/public/pricing)
 
 ## Model coverage
 
-**GPT Image 2 · GPT Image 2.5 Flare · GPT Image 2.5 Sunburst** · Nano Banana · Nano Banana Pro · Nano Banana 2 · Flux 2 Klein 4B · Flux 2 Klein 9B · Seedream v4 · Seedream v4.5 · Seedream v5 Lite · Seedream 5.5 · Qwen Image · MiniMax H3 Image · Midjourney · Z-Image Turbo
+**GPT Image 2 · GPT Image 2.5 Flare · GPT Image 2.5 Sunburst** · Nano Banana · Nano Banana Pro · Nano Banana 2 · Seedream 5.5 · Seedream v5 Lite · Seedream v4.5 · Seedream v4 · Flux 2 Klein 9B · Flux 2 Klein 4B · Qwen Image · MiniMax H3 Image · Midjourney · Z-Image Turbo
 
 ## Why not call the official APIs yourself
 
-Wiring them up isn't the hard part. Keeping them wired up is. This is the part we absorb:
+Wiring them up isn't hard; keeping them wired up is. This is what the skill saves your agent:
 
-| | Doing it yourself | Using this |
+| Step | Doing it yourself | Using this |
 |---|---|---|
-| Accounts | Alibaba Cloud, Volcengine, Google, OpenAI — each with its own verification | One Draftio account |
-| Wire formats | DashScope's private format, Volcengine v3, Google, OpenAI — four of them | One OpenAI-compatible shape |
-| Free quota | Apply per vendor, mostly expires in 90 days, then hard failures | 500 points on sign-up |
-| Billing | Five bills, five expense flows, five invoices | One |
-| Concurrency | Defaults of 1–2; quota increases billed monthly | Queueing, no extra charge |
-| Price checks | You maintain a price table that goes stale | One `curl`, always current |
+| Accounts | Alibaba, Volcano, Google, OpenAI — four accounts, four real-name checks | One Draftio account |
+| API shapes | DashScope private format / Volcano v3 / Google / OpenAI | One OpenAI-compatible shape |
+| Free quota | Claimed per vendor, mostly expires in 90 days, then hard errors | 500 points on sign-up |
+| Billing | Five bills, five expense workflows, five invoices | One |
+| Concurrency | Default 1–2, capacity upgrades in the ¥10k/month range | Queued, no extra charge |
+| Price tracking | Your own price table, always out of date | One `curl`, always current |
 
-The skill only covers what needs no credentials: **model choice, prompt writing, price quoting.** Generation happens in the canvas, where images land in your asset library instead of a download folder.
+The skill only handles **model choice, prompt writing and pricing** — the three things that need no credentials. Actual generation happens in the canvas, where images land in your asset library instead of your downloads folder.
 
 ## Troubleshooting
 
-**The agent ignores it.** Make sure it installed into the current project (the default is per-project, not global) and restart the session. In Claude Code, `npx skills list` should show `draftio-image`.
+**Nothing happens after installing.** Make sure it installed into the current project (that's the default, not global), then restart the session. In Claude Code, `npx skills list` should show `draftio-image`.
 
-**Its numbers don't match the site.** Ask it to paste the output of `curl -s https://www.draftio.cn/api/v2/public/models`. If it can't produce that request, it's reciting stale numbers — i.e. it isn't really installed.
+**Its price disagrees with the site.** Ask it to paste the output of `curl -s https://www.draftio.cn/api/v2/public/models`. If it can't run that request, it's reciting old numbers — effectively not installed.
 
-**It claims it can generate the image.** It can't. This version only picks models, writes prompts and quotes prices; generation goes through the [canvas](https://www.draftio.cn/canvas).
+**It says it can generate for you.** It's making that up. This version selects models, writes prompts and quotes prices; rendering happens in the [canvas](https://www.draftio.cn/canvas).
 
-**Codex can't find the plugin.** Use `codex plugin add github.com/mionax/draftio-skills` rather than copying `plugin.json` somewhere by hand.
+**Codex can't find the plugin.** Use `codex plugin add github.com/mionax/draftio-skills` rather than copying `plugin.json` around.
 
-**Looking for other skills.** `npx skills find <query>` — and `npx skills find draftio` to see whether we show up.
+**Looking for other skills.** `npx skills find <keyword>`; feel free to run `npx skills find draftio` and see if we show up.
 
 ## Repo layout
 
 ```
-plugin.json                     Agent Plugins manifest (Codex and compatible hosts)
-skills/draftio-image/SKILL.md   the skill itself, single source
-scripts/validate.mjs            validates manifest and frontmatter
-.github/workflows/validate.yml  runs on push / PR
+skills/draftio-image/SKILL.md     the only skill: model choice / prompts / pricing
+plugin.json                       portable Agent Plugins manifest
+.claude-plugin/plugin.json        Claude Code plugin manifest
+.codex-plugin/plugin.json         Codex plugin manifest
+install.sh                        one command, detects installed hosts
+examples/*.md                     four scenario recipes (offline copies of prompt-library)
+scripts/validate.mjs              validates manifests, frontmatter, examples
+.github/workflows/validate.yml    runs on push / PR
 ```
 
 ## License
@@ -174,6 +186,6 @@ MIT
 
 ---
 
-If this saved you one model decision and one price quote, a ⭐ helps more people find it in `npx skills find`.
+If this skill saved you one model-selection detour and one pricing lookup, a ⭐ helps others find it via `npx skills find`.
 
-Issues about wrong prices, missing models, or hosts we don't support are welcome.
+Bugs, wrong prices and model requests are all welcome as issues.

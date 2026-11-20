@@ -2,9 +2,9 @@
 
 **中文** · [English](README.en.md)
 
-给 coding agent 用的图像生成 skill：**帮你选对模型、按模型方言写提示词、给出确切价格**。
+Draftio 的 agent 入口。让你的 coding agent 在「要一张图」这件事上不再给废建议：**选对模型、按模型方言写提示词、报出确切点数价格**。
 
-不用 API key，不用注册，装完就能用。生成这一步交给 [Draftio 画布](https://www.draftio.cn/canvas)。
+这一步不需要 API key、不需要注册——它的工作是决策与报价，出图在 [Draftio 画布](https://www.draftio.cn/canvas) 完成。API key 与 MCP 服务端在路上，上线后同一个 skill 直接接管「提交生成」。
 
 ```bash
 npx skills add mionax/draftio-skills
@@ -53,22 +53,31 @@ curl -s https://www.draftio.cn/api/v2/public/models
 
 这三条写得很直白，是为了让 agent 别替我们吹牛。
 
-## 场景
+## 示例配方（来自我们的提示词库）
 
-入口 skill 判断你要做什么，然后指向对应的场景配方。每个配方都是**从 Draftio 提示词库里已有的模板改出来的**——不是凭空写的，是我们在产品里已经跑通的写法。
+skill 判断你要做什么，然后翻出下面这份配方。四份都是**从 Draftio 提示词库里已有的模板改出来的**——不是凭空写的，是我们在产品里已经跑通的写法，只是被压成了可以填空的版本。
 
-| 场景 | 你可能会说 | 首选模型 |
+| 配方 | 你可能会说 | 首选模型 |
 |---|---|---|
-| [小红书封面](skills/draftio-image/xiaohongshu-cover/SKILL.md) | 「做张小红书封面」「3:4 竖版带标题字」 | `gpt-image-2` · 60 点起 |
-| [商品图 / 白底图](skills/draftio-image/product-shot/SKILL.md) | 「把产品拍得高级点」「要张白底主图」 | `gpt-image-2` · 60 点起 |
-| [视频封面 / 缩略图](skills/draftio-image/youtube-thumbnail/SKILL.md) | 「YouTube 缩略图」「播客封面 16:9」 | `gpt-image-2` · 60 点起 |
-| [信息图 / 地图](skills/draftio-image/infographic-map/SKILL.md) | 「城市美食地图」「图文长图」 | `gpt-image-2` · 60 点起 |
+| [小红书封面](examples/xiaohongshu-cover.md) | 「做张小红书封面」「3:4 竖版带标题字」 | `gpt-image-2` · 60 点起 |
+| [商品图 / 白底图](examples/product-shot.md) | 「把产品拍得高级点」「要张白底主图」 | `gpt-image-2` · 60 点起 |
+| [视频封面 / 缩略图](examples/youtube-thumbnail.md) | 「YouTube 缩略图」「播客封面 16:9」 | `gpt-image-2` · 60 点起 |
+| [信息图 / 地图](examples/infographic-map.md) | 「城市美食地图」「图文长图」 | `gpt-image-2` · 60 点起 |
 
-每个配方都包含：何时用、选哪几个模型、可直接填空的提示词模板、参数（比例/分辨率/张数）、验收清单、以及出问题时的返工路径。
+每份都包含：何时用、选哪几个模型、可直接填空的提示词模板、参数、验收清单，以及出问题时的返工路径。
 
-想自己调参数？对应的完整模板在 [prompt-library](https://www.draftio.cn/prompt-library)。
+仓库里这些是**文字副本**，以带成品图的那一版为准：[prompt-library](https://www.draftio.cn/prompt-library)。
 
 ## 安装
+
+### 一条命令（自动探测已装的宿主）
+
+```bash
+git clone https://github.com/mionax/draftio-skills.git
+cd draftio-skills && ./install.sh
+```
+
+`./install.sh claude` / `codex` / `opencode` 可以只装其中一个，`./install.sh list` 只打印会装到哪里。
 
 ### Claude Code
 
@@ -89,7 +98,6 @@ codex plugin add github.com/mionax/draftio-skills
 ### 手动
 
 ```bash
-git clone https://github.com/mionax/draftio-skills.git
 cp -r draftio-skills/skills/draftio-image .claude/skills/
 ```
 
@@ -162,10 +170,14 @@ Seedream 5.5 · 默认 2K · 58 点（¥0.58）  ← 不指定分辨率时实际
 ## 仓库结构
 
 ```
-plugin.json                     Agent Plugins 清单（Codex / 兼容宿主）
-skills/draftio-image/SKILL.md   skill 正文，唯一的源
-scripts/validate.mjs            校验清单与 frontmatter
-.github/workflows/validate.yml  push / PR 自动校验
+skills/draftio-image/SKILL.md     唯一的 skill，管选型 / 提示词 / 报价
+plugin.json                      Agent Plugins 便携清单
+.claude-plugin/plugin.json       Claude Code 插件清单
+.codex-plugin/plugin.json        Codex 插件清单
+install.sh                       一条命令装进已探测到的宿主
+examples/*.md                    四条场景配方（站点 prompt-library 的离线副本）
+scripts/validate.mjs             校验清单、frontmatter、示例完整性
+.github/workflows/validate.yml   push / PR 自动校验
 ```
 
 ## 许可

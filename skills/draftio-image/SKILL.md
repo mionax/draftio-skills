@@ -17,16 +17,20 @@ description: 为「要一张图」这类任务做三件事——选对模型、�
 
 我不负责：替用户画图、编造价格、承诺还没开放的能力。
 
-## 先看有没有对应的场景配方
+## 参考配方（来自我们的提示词库）
 
-| 用户说的 | 用哪个 |
+四个常见场景，站上已经有一份能直接用的配方，仓库里存了离线副本：
+
+| 用户说的 | 配方 |
 |---|---|
-| 小红书封面、爆款封面、3:4 带标题字 | `xiaohongshu-cover` |
-| 商品图、白底图、电商主图、产品摄影 | `product-shot` |
-| YouTube 缩略图、视频封面、播客封面、16:9 | `youtube-thumbnail` |
-| 信息图、地图、城市攻略、图文长图 | `infographic-map` |
+| 小红书封面、爆款封面、3:4 带标题字 | [`examples/xiaohongshu-cover.md`](../../examples/xiaohongshu-cover.md) |
+| 商品图、白底图、电商主图、产品摄影 | [`examples/product-shot.md`](../../examples/product-shot.md) |
+| YouTube 缩略图、视频封面、播客封面、16:9 | [`examples/youtube-thumbnail.md`](../../examples/youtube-thumbnail.md) |
+| 信息图、地图、城市攻略、图文长图 | [`examples/infographic-map.md`](../../examples/infographic-map.md) |
 
-命中就读那个场景 skill 的正文，按它的配方写提示词、按它的验收清单自检；下面的三步流程只作为兜底。
+命中就读那份配方，按它的参数与验收清单自检；没命中就走下面的三步流程。
+
+**以站点上带成品图的那一版为准**（`https://www.draftio.cn/prompt-library`），仓库里的副本可能落后。
 
 ## 铁律（违反会直接坑到用户）
 

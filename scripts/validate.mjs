@@ -62,6 +62,30 @@ for (const entry of readdirSync(skillsDir)) {
   if ((fields.description ?? '').length < 40) fail(`${skillPath}: description is too short to be useful`)
 }
 
+for (const manifestPath of ['.claude-plugin/plugin.json', '.codex-plugin/plugin.json']) {
+  const value = readJson(manifestPath)
+  if (!value) continue
+  for (const key of ['name', 'version', 'description']) {
+    if (!value[key]) fail(`${manifestPath}: missing "${key}"`)
+  }
+}
+
+for (const name of ['xiaohongshu-cover', 'product-shot', 'youtube-thumbnail', 'infographic-map']) {
+  const examplePath = join('examples', `${name}.md`)
+  try {
+    const raw = readFileSync(examplePath, 'utf8')
+    if (raw.trimStart().startsWith('---')) fail(`${examplePath}: examples are plain docs, drop the frontmatter`)
+  } catch {
+    fail(`${examplePath}: missing (examples must stay in sync with the site)`)
+  }
+}
+
+try {
+  readFileSync('install.sh', 'utf8')
+} catch {
+  fail('install.sh: missing')
+}
+
 for (const readme of ['README.md', 'README.en.md']) {
   let raw
   try {
