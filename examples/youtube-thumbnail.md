@@ -22,12 +22,12 @@
 
 | 场景 | 模型 id | 点数 | 为什么 |
 |---|---|---|---|
-| 默认：大字排版 + 撕裂纸拼贴 | `gpt-image-2` | 60（1k）/ 80（默认 2k）/ 120（4k） | 英文超粗压缩字体最准，能控字位和大小 |
-| 中文标题字为主 | `seedream-v5-5` | 33（1k）/ 58（默认 2k） | 中文字形最稳，支持改图 |
+| 默认：大字排版 + 撕裂纸拼贴 | `gpt-image-2` | 60（1k）/ 80（2k）/ 120（4k） | 英文超粗压缩字体最准，能控字位和大小 |
+| 中文标题字为主 | `seedream-v5-5` | 33（1k、1.5k）/ 58（2k） | 中文字形最稳，支持改图 |
 | 一次出 4 张挑 | `midjourney` | 173（一次 4 张） | 风格化最猛，但**不能改图、文字基本靠运气** |
 | 主标题要更“编辑感” | `gpt-image-2.5-sunburst` | 71 / 80 / 120 | 同族模型，版式更硬朗 |
 
-默认 `gpt-image-2` 2k 档（80 点 ≈ ¥0.80）。封面是**一次性的流量入口**，为省 20 点点数去赌文字，通常要多花三四轮才是真亏。`midjourney` 只在“先看看哪种拼贴风格对味”时用，且要接受它的字不可用——出图后必须转到 `gpt-image-2.5-flare`（60/80/120，支持改图）重排文字。
+建议走 `gpt-image-2` 2k 档（80 点 ≈ ¥0.80）。封面是**一次性的流量入口**，为省 20 点点数去赌文字，通常要多花三四轮才是真亏。`midjourney` 只在“先看看哪种拼贴风格对味”时用，且要接受它的字不可用——出图后必须转到 `gpt-image-2.5-flare`（60/80/120，支持改图）重排文字。
 
 ## 提示词配方
 
@@ -67,7 +67,7 @@ Mood: premium business podcast, serious and intelligent, not corporate minimalis
 ## 参数
 
 - **比例必须 16:9**。YouTube 缩略图建议出 2k 档以上，1280×720 是平台最低要求，2k 上传后不会被拉伸。
-- **档位**：`gpt-image-2` 1k 60 点 / 默认 2k 80 点 / 4k 120 点。
+- **档位**：`gpt-image-2` 1k 60 点 / 2k 80 点 / 4k 120 点。不选分辨率按接口返回的默认档计费。
 - **i2i 顺序**：人像放图 1，若有品牌元素/旧封面放图 2；顺序就是提示词里说的“第几张”。
 - **`midjourney`**：173 点一次 4 张，只出图不能改图，末尾加 `--ar 16:9`；挑中的那张再用 `gpt-image-2.5-flare` 重排文字。
 - **张数**：同一条提示词一次出 1–2 张；要 4 张不同版式，改“左/右主体 + 红黑比例”再跑。
@@ -86,7 +86,7 @@ Mood: premium business podcast, serious and intelligent, not corporate minimalis
 
 | 典型失败 | 改哪一句 | 换哪个模型 |
 |---|---|---|
-| 标题糊 / 缺笔 / 变乱码 | 标题缩到 6 词以内，补 `ultra-bold condensed sans-serif, clean letterforms` | 中文标题换 `seedream-v5-5`（58 点）；英文仍错就 `gpt-image-2` 4k 档（120 点） |
+| 标题糊 / 缺笔 / 变乱码 | 标题缩到 6 词以内，补 `ultra-bold condensed sans-serif, clean letterforms` | 中文标题换 `seedream-v5-5`（2k 档 58 点）；英文仍错就 `gpt-image-2` 4k 档（120 点） |
 | 换了个人 / 脸不像 | 补 `keep the facial features, hairstyle and expression from image 1` | 改图走 `gpt-image-2.5-flare`（80 点） |
 | 画面太花、像营销海报 | 把调色板锁成 `crimson red, black and off-white only`，删所有装饰词 | 保持 `gpt-image-2` |
 | 字全堆在人脸上 | 明写 `headline on the left, subject on the right, face unobstructed` | 不用换 |

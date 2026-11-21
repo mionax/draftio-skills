@@ -22,13 +22,13 @@
 
 | 场景 | 模型 id | 点数 | 为什么 |
 |---|---|---|---|
-| 默认：真实感商品图 | `gpt-image-2` | 60（1k）/ 80（默认 2k）/ 120（4k） | 英文产品摄影配方最稳，材质与光影像真实拍摄 |
-| 图上有中文卖点字 | `seedream-v5-5` | 33（1k）/ 58（默认 2k） | 中文文字最准，改图也支持 |
+| 默认：真实感商品图 | `gpt-image-2` | 60（1k）/ 80（2k）/ 120（4k） | 英文产品摄影配方最稳，材质与光影像真实拍摄 |
+| 图上有中文卖点字 | `seedream-v5-5` | 33（1k、1.5k）/ 58（2k） | 中文文字最准，改图也支持 |
 | 9 点试构图、试背景色 | `z-image-turbo` | 9 | 最便宜，一次 4 张才 36 点；只定方向，不看细节 |
 | 把实拍产品放进新场景 | `gpt-image-2.5-flare` | 60 / 80 / 120 | 支持改图，能锁住产品本体只换环境 |
 | 极简白底、只要一张 | `qwen-image` | 35 | 便宜，支持改图，质感略平 |
 
-默认就走 `gpt-image-2` 的 2k 档（80 点 ≈ ¥0.80）。商品图是**长期资产**，主图会挂在详情页几个月，省 20 点换来材质糊掉不值。只有“先看三种背景哪个对”才用 `z-image-turbo`。
+建议就走 `gpt-image-2` 的 2k 档（80 点 ≈ ¥0.80）。商品图是**长期资产**，主图会挂在详情页几个月，省 20 点换来材质糊掉不值。只有“先看三种背景哪个对”才用 `z-image-turbo`。
 
 ## 提示词配方
 
@@ -75,7 +75,7 @@ Seamless pure white background (#FFFFFF), no horizon line, no gradient, no props
 ## 参数
 
 - **比例**：电商主图 **1:1**；竖版详情页 **3:4**；横版 banner **16:9**。别用奇怪比例，平台会二次裁切。
-- **档位**：`gpt-image-2` 1k 60 点 / 默认 2k 80 点 / 4k 120 点。**不选分辨率就是 80 点**，报价必须说清。
+- **档位**：`gpt-image-2` 1k 60 点 / 2k 80 点 / 4k 120 点。**不选分辨率按接口返回的默认档计费**（以接口为准），报价必须说清档位。
 - **草稿**：`z-image-turbo` 9 点/张，一次 4 张 36 点 ≈ ¥0.36，只用来比背景色和构图。
 - **改图**：`gpt-image-2.5-flare` 60/80/120；把实拍图放图 1，写 `keep the product shape, label and material exactly, replace only the background with…`。
 - **张数**：一次 1–2 张。要第 2 张只换一句（换背景色或换光位），不要整段重写。
@@ -98,7 +98,7 @@ Seamless pure white background (#FFFFFF), no horizon line, no gradient, no props
 | 白底发灰、有地平线 | 加 `seamless pure white #FFFFFF, no gradient, no horizon line` | `gpt-image-2` 4k 档（120 点），边缘更干净 |
 | 主体顶满 / 没地方放字 | 把 `minimal and balanced` 改成明写 `negative space on the {方向}` | 不用换 |
 | 出现了多余道具、背景杂 | 背景三件砍到一件，删掉所有 `props` 描述 | `qwen-image`（35 点）出极简版 |
-| 中文卖点字缺笔 | 先出无字底图，再用 `seedream-v5-5` 加字 | `seedream-v5-5`（58 点） |
+| 中文卖点字缺笔 | 先出无字底图，再用 `seedream-v5-5` 加字 | `seedream-v5-5`（2k 档 58 点） |
 
 出图在 https://www.draftio.cn/canvas 完成：选模型 → 粘提示词 → 选分辨率 → 提交。本 skill 只负责选型、提示词和报价，不承诺直接出图。
 

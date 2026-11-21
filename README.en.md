@@ -16,9 +16,9 @@ npx skills add mionax/draftio-skills
 
 | | What | Why it matters |
 |---|---|---|
-| **Pick a model** | Given the scenario (Chinese poster, English layout, editing, multi-reference, 4K, artistic), recommends one primary and one alternative | The 16 models have different strengths; picking wrong means paying twice |
+| **Pick a model** | Given the scenario (Chinese poster, English layout, editing, multi-reference, 4K, artistic), recommends one primary and one alternative | The 20 models have different strengths; picking wrong means paying twice |
 | **Write the prompt** | In each model's dialect: Chinese for Seedream/Qwen, structured English for GPT Image/Nano Banana, comma keyword flow + `--ar` for Midjourney | The same request needs a different phrasing per model; wrong phrasing means a wasted image |
-| **Quote the price** | Gives both the **entry tier** and the **default-tier charge**, plus batch totals | Entry price ≠ what you pay. Seedream 5.5 starts at 33 points but charges 58 when you don't pick a resolution — a 76% difference |
+| **Quote the price** | Gives the **entry price** and **per-resolution tier prices**, plus batch totals | Entry price ≠ every tier. Seedream 5.5 starts at 33 points (1K and 1.5K cost the same), 2K is 58; when you don't pick a resolution, billing follows the default tier returned by the API |
 
 Prices are never hardcoded. The skill reads them on every run:
 
@@ -49,7 +49,7 @@ For reference: OpenAI's high-quality 1024×1024 tier is about $0.211 per image (
 
 - **It does not generate images itself.** Rendering happens in the canvas. The API key and MCP server are still being built, so the agent cannot submit jobs yet.
 - It cannot read your balance or your past renders.
-- No video models (16 image models only).
+- No video models (20 image models only).
 
 These three points are blunt on purpose: the skill should not let the agent overpromise on our behalf.
 
@@ -115,8 +115,8 @@ Once installed, tell your agent:
 4. It quotes two lines, for example:
 
 ```
-Seedream 5.5 · 1K · 33 points (¥0.33)
-Seedream 5.5 · default 2K · 58 points (¥0.58)  ← what you actually pay without picking a resolution
+Seedream 5.5 · 1K / 1.5K · 33 points (¥0.33)
+Seedream 5.5 · 2K · 58 points (¥0.58)  ← the default tier and the actual charge come from the API
 ```
 
 **If it quotes numbers without fetching prices, the skill isn't installed.**
@@ -126,13 +126,13 @@ Seedream 5.5 · default 2K · 58 points (¥0.58)  ← what you actually pay with
 - **One key, one bill.** Seedream / Qwen / Nano Banana / GPT Image / FLUX / Midjourney behind a single endpoint — no four cloud accounts and four signing schemes.
 - **Alipay, RMB, one invoice.** No foreign cards, no PayPal.
 - **Outputs land in the canvas.** No download-and-re-upload: keep editing, merging, outpainting.
-- **500 free points on sign-up** (valid 30 days) — roughly 55 Z-Image Turbo images or 8 Seedream 5.5 images at the default 2K.
+- **500 free points on sign-up** (valid 30 days) — roughly 55 Z-Image Turbo images or 15 Seedream 5.5 images (at the 33-point entry price).
 
 ## Pricing
 
 Never cached, never hardcoded. These three are the source of truth:
 
-- For humans: [draftio.cn/pricing/models](https://www.draftio.cn/pricing/models) — 16 models, per-tier prices, including the default tier
+- For humans: [draftio.cn/pricing/models](https://www.draftio.cn/pricing/models) — 20 models, per-tier prices, including the default tier
 - For machines: [`/api/v2/public/models`](https://www.draftio.cn/api/v2/public/models) — points, tiers, images per call
 - Plans and point packs: [`/api/v2/public/pricing`](https://www.draftio.cn/api/v2/public/pricing)
 

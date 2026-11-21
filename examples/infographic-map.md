@@ -21,7 +21,7 @@
 |---|---|---|---|
 | 默认：结构化排版的插画地图 | `gpt-image-2` | 60 / 2K 80 | 原配方的母模型，按 JSON 落版最稳，编号与图例容易对上 |
 | 要印刷、要放大看细节 | `gpt-image-2` 4K 档 / `minimax-h3-image` 4K 档 | 120 / 156 | 标签字更清楚；4K 单价最高，定稿再上 |
-| 中文标签为主、画风干净 | `seedream-v5-5` | 33 / 默认 2K 58 | 中文字形稳，比默认档低一截 |
+| 中文标签为主、画风干净 | `seedream-v5-5` | 33 / 2K 58 | 中文字形稳，1k 与 1.5k 同价 |
 | 已有一版，只改字/改点位 | `seedream-v4-edit` / `seedream-v4-5-edit` | 34 / 45 | 改图专型，省一次整张重生成 |
 | 先比水彩/扁平/复古画风（不看字） | `z-image-turbo` | 9 | 最便宜，一次 4 张 36 点；文字一定不能用 |
 | 想换落字或平面感 | `nano-banana-2` / `gpt-image-2.5-sunburst` / `gemini-3-pro-image-preview` | 60·80 / 71·80 / 70·85 | 备选，按落字稳和设计稿感挑 |
@@ -79,10 +79,10 @@
 ## 参数
 
 - **比例**：城市攻略长图 **3:4 或 9:16**；单页信息图 **4:3 / 1:1**。别长过 9:16，再长字号被压到不可读。
-- **档位**：首选 `gpt-image-2` 60 点（基础）/ 80 点（2K，默认档，不选就是它）。标签 ≥10 条直接报 80 点。
+- **档位**：首选 `gpt-image-2` 60 点（1k）/ 80 点（2k）/ 120 点（4k）。标签 ≥10 条直接报 80 点（2k）。不选分辨率按接口返回的默认档计费，实扣以接口为准。
 - **备选价**：`seedream-v5-5` 33 / 58（2K）；`nano-banana-2` 60 / 80；`gpt-image-2.5-flare` 60 / 80；`gpt-image-2.5-sunburst` 71 / 80；`gemini-3-pro-image-preview` 70 / 85；`minimax-h3-image` 52；`seedream-v5-lite` 61；`qwen-image` 35；`gemini-2.5-flash-image` 30；`flux-2-klein-9b` 18；`flux-2-klein-4b` 14。
 - **改图与草稿**：`seedream-v4-edit` 34 / `seedream-v4-5-edit` 45 拿原图只改那几个 label；`z-image-turbo` 9 点/张（不支持改图）先定画风，结构过了再出同版式其他城市。
-- 1000 点 = ¥10（1 点 ≈ ¥0.01）。报价要说清是 60 点基础档还是 80 点 2K 档。
+- 1000 点 = ¥10（1 点 ≈ ¥0.01）。报价要说清用的是哪一档（比如 80 点 2k 档）。
 
 ## 验收清单
 
@@ -97,7 +97,7 @@
 |---|---|---|
 | 点位数量不对 | 补 `"count": N`，把 `labels` 和 `illustrations` 逐条列全 | 保持 `gpt-image-2` |
 | 编号跳号/重复 | 把编号写进 label 字符串，别让模型排序 | 仍错就改 `nano-banana-2`（80 点） |
-| 中文标签糊成乱码 | 标签砍到 8 条内，style 里加 `legible hand-lettered labels` | `seedream-v5-5`（58 点） |
+| 中文标签糊成乱码 | 标签砍到 8 条内，style 里加 `legible hand-lettered labels` | `seedream-v5-5`（2k 档 58 点） |
 | 图例和画面对不上 | 图例缩到 4 项，只留画面上真实存在的符号 | 不用换 |
 | 只差几个字/一个点位 | 别整张重生成，拿原图改 | `seedream-v4-edit` 34 / `seedream-v4-5-edit` 45 |
 
