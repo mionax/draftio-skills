@@ -1,5 +1,7 @@
 # Draftio Skills
 
+[![skills.sh](https://skills.sh/b/mionax/draftio-skills)](https://skills.sh/mionax/draftio-skills) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 **中文** · [English](README.en.md)
 
 Draftio 的 agent 入口：让你的 coding agent 在「要一张图」这件事上不再瞎猜模型和价格，而是给出选型、按这个模型的方言写好的提示词、以及接口里读到的确切点数。

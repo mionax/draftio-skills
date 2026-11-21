@@ -1,5 +1,6 @@
 # Draftio Skills
 
+[![skills.sh](https://skills.sh/b/mionax/draftio-skills)](https://skills.sh/mionax/draftio-skills) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [中文](README.md) · **English**
 
 Draftio's entry point for your coding agent: when the task needs an image, it stops guessing at models and prices and hands back the model pick, a prompt written in that model's dialect, and the exact point cost read from the live API.
