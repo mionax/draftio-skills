@@ -4,7 +4,7 @@
 
 Draftio 的 agent 入口。让你的 coding agent 在「要一张图」这件事上不再给废建议：**选对模型、按模型方言写提示词、报出确切点数价格**。
 
-这一步不需要 API key、不需要注册——它的工作是决策与报价，出图在 [Draftio 画布](https://www.draftio.cn/canvas) 完成。API key 与 MCP 服务端在路上，上线后同一个 skill 直接接管「提交生成」。
+只做决策与报价时不需要 API key、不需要注册。装上 [Draftio MCP](https://www.draftio.cn/mcp) 之后，同一个 skill 会接管「提交生成」：选模型、报价、出图、把链接交给你，全程不用离开终端。
 
 ```bash
 npx skills add mionax/draftio-skills
@@ -47,7 +47,7 @@ curl -s https://www.draftio.cn/api/v2/public/models
 
 ## 它不做什么
 
-- **不自己生成图片**：生成在画布上完成。API key 与 MCP 服务端还在开发中，装好之后暂不支持让 agent 直接提交任务。
+- **没装 MCP 就不生成图片**：只给方案与报价，图去 [画布](https://www.draftio.cn/canvas) 出。装上 MCP（`https://www.draftio.cn/mcp`）后才有 `generate_image`，这时它会直接出图并把 HTTPS 链接给你。
 - 读不到你的余额和历史作品。
 - 不含视频模型（当前只覆盖 20 个图像模型）。
 

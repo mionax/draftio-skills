@@ -4,7 +4,7 @@
 
 Draftio's agent entry point. It stops your coding agent from giving useless image advice: **pick the right model, write the prompt in that model's dialect, quote the exact price in points.**
 
-No API key and no sign-up needed for this part — the skill handles decisions and pricing, and the actual render happens in the [Draftio canvas](https://www.draftio.cn/canvas). An API key and MCP server are on the way; once they ship, the same skill takes over "submit the generation" too.
+No API key or sign-up is needed for the decision and pricing part. Connect [Draftio MCP](https://www.draftio.cn/mcp) and the same skill also takes over generation: pick the model, quote the price, render, and hand you a link — without leaving the terminal.
 
 ```bash
 npx skills add mionax/draftio-skills
@@ -47,7 +47,7 @@ For reference: OpenAI's high-quality 1024×1024 tier is about $0.211 per image (
 
 ## What it doesn't do
 
-- **It does not generate images itself.** Rendering happens in the canvas. The API key and MCP server are still being built, so the agent cannot submit jobs yet.
+- **Without MCP it does not generate.** You get the plan and the price; the render happens in the [canvas](https://www.draftio.cn/canvas). With MCP connected (`https://www.draftio.cn/mcp`) it gains `generate_image` and returns an HTTPS link directly.
 - It cannot read your balance or your past renders.
 - No video models (20 image models only).
 
