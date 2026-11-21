@@ -2,15 +2,34 @@
 
 **中文** · [English](README.en.md)
 
-Draftio 的 agent 入口。让你的 coding agent 在「要一张图」这件事上不再给废建议：**选对模型、按模型方言写提示词、报出确切点数价格**。
+Draftio 的 agent 入口：让你的 coding agent 在「要一张图」这件事上不再瞎猜模型和价格，而是给出选型、按这个模型的方言写好的提示词、以及接口里读到的确切点数。
 
-只做决策与报价时不需要 API key、不需要注册。装上 [Draftio MCP](https://www.draftio.cn/mcp) 之后，同一个 skill 会接管「提交生成」：选模型、报价、出图、把链接交给你，全程不用离开终端。
+无需注册、无需 API key 就能选型和报价。
 
 ```bash
 npx skills add mionax/draftio-skills
 ```
 
+| | |
+|---|---|
+| ![小红书封面](assets/readme/xiaohongshu-cover.jpg)<br>小红书封面 · `gpt-image-2` · 60 点 | ![白底商品图](assets/readme/product-shot.jpg)<br>白底商品图 · `gpt-image-2` · 60 点 |
+| ![YouTube 缩略图](assets/readme/youtube-thumbnail.jpg)<br>YouTube 缩略图 · `gpt-image-2` · 60 点 | ![城市美食信息图](assets/readme/infographic.jpg)<br>成都美食信息图 · `gpt-image-2` · 60 点 |
+
+上图全部由 Draftio 自己生成，提示词与复现命令见 [`assets/readme/README.md`](assets/readme/README.md)。中文标题零错字，这就是 `gpt-image-2` 的强项。
+
 ---
+
+## 三档摩擦：免费到哪一步
+
+| 阶段 | 要不要账号 | 要花钱吗 | 能做什么 |
+|---|---|---|---|
+| 选模型、写提示词、报价 | 不要 | 不要 | 告诉你怎么做、多少钱 |
+| 出图 | 要（复制一把 `dk_live_` key） | 按点数扣 | 真的生成，返回图片链接 |
+| 充值 | 要 | 是 | 1000 点 = ¥10 |
+
+装完就能用第一步；什么时候收钱，我们会提前告诉你。
+
+**注册送 500 点**（30 天有效）≈ 55 张 Z-Image Turbo 或 15 张 Seedream 5.5，够你把整条链路跑一遍。
 
 ## 它做什么
 
@@ -47,7 +66,7 @@ curl -s https://www.draftio.cn/api/v2/public/models
 
 ## 它不做什么
 
-- **没装 MCP 就不生成图片**：只给方案与报价，图去 [画布](https://www.draftio.cn/canvas) 出。装上 MCP（`https://www.draftio.cn/mcp`）后才有 `generate_image`，这时它会直接出图并把 HTTPS 链接给你。
+- **没装 MCP 就不生成图片**：只给方案与报价，图去 [画布](https://www.draftio.cn/canvas?utm_source=github&utm_medium=readme&utm_campaign=canvas) 出。装上 MCP（`https://www.draftio.cn/mcp`）后才有 `generate_image`，这时它会直接出图并把 HTTPS 链接给你。
 - 读不到你的余额和历史作品。
 - 不含视频模型（当前只覆盖 20 个图像模型）。
 
@@ -66,18 +85,14 @@ skill 判断你要做什么，然后翻出下面这份配方。四份都是**从
 
 每份都包含：何时用、选哪几个模型、可直接填空的提示词模板、参数、验收清单，以及出问题时的返工路径。
 
-仓库里这些是**文字副本**，以带成品图的那一版为准：[prompt-library](https://www.draftio.cn/prompt-library)。
+仓库里这些是**文字副本**，以带成品图的那一版为准：[prompt-library](https://www.draftio.cn/prompt-library?utm_source=github&utm_medium=readme&utm_campaign=prompt-library)。
 
 ## 安装
 
-### 一条命令（自动探测已装的宿主）
+首屏那条 `npx skills add mionax/draftio-skills` 就够了：它探测当前项目里的宿主，装成项目级 skill（默认不是全局）。下面这些是同一件事的其他入口。
 
-```bash
-git clone https://github.com/mionax/draftio-skills.git
-cd draftio-skills && ./install.sh
-```
-
-`./install.sh claude` / `codex` / `opencode` 可以只装其中一个，`./install.sh list` 只打印会装到哪里。
+<details>
+<summary>分别安装：Claude Code / Codex / Cursor / 手动 / 一键脚本</summary>
 
 ### Claude Code
 
@@ -101,7 +116,20 @@ codex plugin add github.com/mionax/draftio-skills
 cp -r draftio-skills/skills/draftio-image .claude/skills/
 ```
 
+### 一键脚本（需要先 clone）
+
+```bash
+git clone https://github.com/mionax/draftio-skills.git
+cd draftio-skills && ./install.sh
+```
+
+`./install.sh claude` / `codex` / `opencode` 可以只装其中一个，`./install.sh list` 只打印会装到哪里。
+
+</details>
+
 ## 试一句
+
+**如果它没查价格就直接报数，说明没装对。**
 
 装好之后，对 agent 说：
 
@@ -119,22 +147,19 @@ Seedream 5.5 · 1K / 1.5K · 33 点（¥0.33）
 Seedream 5.5 · 2K · 58 点（¥0.58）  ← 默认档与实扣以接口返回为准
 ```
 
-**如果它没查价格就直接报数，说明没装对。**
-
 ## 为什么是 Draftio
 
 - **一个 key、一张账单**：Seedream / Qwen / Nano Banana / GPT Image / FLUX / Midjourney 走同一个端点，不用去四个云开四个账号、学四套签名。
 - **支付宝、人民币、一张发票**：不用外卡，不用 PayPal。
 - **产物直接进画布**：生成的图不用下载再上传，可以继续改、继续融合、继续扩图。
-- **注册送 500 点**（30 天有效），大约 55 张 Z-Image Turbo，或 15 张 Seedream 5.5（按起价 33 点算）。
 
 ## 价格
 
 价格不缓存、不硬编码，永远以这两个地址为准：
 
-- 人看的：[draftio.cn/pricing/models](https://www.draftio.cn/pricing/models) —— 20 个模型逐档列价，含默认档实扣
-- 机器读的：[`/api/v2/public/models`](https://www.draftio.cn/api/v2/public/models) —— 点数、分档、每次生成张数
-- 套餐与点数包：[`/api/v2/public/pricing`](https://www.draftio.cn/api/v2/public/pricing)
+- 人看的：[draftio.cn/pricing/models](https://www.draftio.cn/pricing/models?utm_source=github&utm_medium=readme&utm_campaign=pricing-models) —— 20 个模型逐档列价，含默认档实扣
+- 机器读的：[`/api/v2/public/models`](https://www.draftio.cn/api/v2/public/models?utm_source=github&utm_medium=readme&utm_campaign=api-models) —— 点数、分档、每次生成张数
+- 套餐与点数包：[`/api/v2/public/pricing`](https://www.draftio.cn/api/v2/public/pricing?utm_source=github&utm_medium=readme&utm_campaign=api-pricing)
 
 ## 覆盖的模型
 
@@ -161,13 +186,14 @@ Seedream 5.5 · 2K · 58 点（¥0.58）  ← 默认档与实扣以接口返回�
 
 **它报的价格和网页对不上。** 让它把 `curl -s https://www.draftio.cn/api/v2/public/models` 的输出贴出来。如果它答不出这个请求，说明它在背旧数字，等于没装对。
 
-**它说能直接帮你出图。** 那是它在编。当前版本只能选模型、写提示词、报价，生成要去[画布](https://www.draftio.cn/canvas)。
+**它说能直接帮你出图。** 那是它在编。当前版本只能选模型、写提示词、报价，生成要去[画布](https://www.draftio.cn/canvas?utm_source=github&utm_medium=readme&utm_campaign=canvas)。
 
 **Codex 找不到插件。** 用 `codex plugin add github.com/mionax/draftio-skills`，不要手动拷 `plugin.json` 到别处。
 
 **想搜到别的 skill。** `npx skills find <关键词>`，顺手可以 `npx skills find draftio` 看看我们在不在。
 
-## 仓库结构
+<details>
+<summary>仓库结构</summary>
 
 ```
 skills/draftio-image/SKILL.md     唯一的 skill，管选型 / 提示词 / 报价
@@ -179,6 +205,8 @@ examples/*.md                    四条场景配方（站点 prompt-library 的�
 scripts/validate.mjs             校验清单、frontmatter、示例完整性
 .github/workflows/validate.yml   push / PR 自动校验
 ```
+
+</details>
 
 ## 许可
 
